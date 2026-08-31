@@ -1,0 +1,264 @@
+DOCUMENTACIÓN DE style.css — Pandalito
+==========================================
+
+Este archivo explica qué hace cada bloque del CSS y, en especial, las
+técnicas nuevas que agregué para resolver lo que pediste. Como saqué
+todos los comentarios del CSS (tal como pediste, para dejarlo limpio),
+esta es ahora la referencia completa de "por qué está escrito así".
+
+
+1. VARIABLES DE COLOR Y EL INTERRUPTOR DE TEMA
+------------------------------------------------
+:root { --bg, --ink, --ink-soft, --accent, --rule, --font-* }
+
+Son variables CSS (custom properties). Se definen una vez y se usan en
+todo el archivo con var(--nombre). La ventaja: cambiás un color en un
+solo lugar y se actualiza en toda la página.
+
+[data-theme="dark"] { ... }
+
+Este selector dice: "si el <html> tiene el atributo data-theme con el
+valor dark, redefiní estas mismas variables con otros colores". Como
+el resto del CSS ya usa var(--bg), var(--ink), etc., no hace falta
+escribir reglas oscuras para cada clase individual: todo el sitio
+cambia de color solo. El único que mueve el atributo data-theme es tu
+script.js (con setAttribute), el CSS solo reacciona.
+
+
+2. LOS BOTONES DEL HEADER: SIN BORDE Y CON ÍCONO QUE CAMBIA
+--------------------------------------------------------------
+Le saqué el "border: 1px solid ..." y el "background" a .hamburger-btn
+y a .btn-styles para que se vean como parte del header, no como
+tarjetas aparte, tal como pediste.
+
+El truco de los íconos (☰ -> ✕ y ☀ -> ☾) es el mismo en los dos
+botones, y es importante que entiendas cómo funciona porque no toqué
+el HTML ni el JS, así que TODO pasa en el CSS:
+
+  .hamburger-btn { font-size: 0; }
+
+Esto hace invisible (tamaño cero) el texto real que está escrito en el
+HTML (el carácter "☰" que viene en el <summary>, y la palabra
+"styles" que viene en el <button>). No lo borra, solo lo "apaga"
+visualmente.
+
+  .hamburger-btn::before { content: "☰"; font-size: 1.15rem; }
+
+::before es un pseudo-elemento: un elemento fantasma que el CSS
+inserta antes del contenido real del botón, sin que exista en el
+HTML. Con la propiedad content le decís qué texto (o símbolo) mostrar.
+Como este pseudo-elemento tiene su propio font-size, no hereda el
+"0" del botón, así que se ve normal.
+
+  .mobile-nav[open] .hamburger-btn::before { content: "✕"; }
+
+[open] es un selector de atributo que apunta al <details> cuando el
+usuario lo tiene abierto (el navegador agrega solo ese atributo,
+no hace falta JS). Entonces, cuando el menú está abierto, este
+selector más específico "gana" y reemplaza el contenido del
+pseudo-elemento por la X. Al cerrarlo, vuelve a mostrarse el ☰ porque
+deja de cumplirse la condición [open]. También roté el botón 90° con
+transform mientras está abierto, para que la transición se sienta más
+natural.
+
+Exactamente la misma lógica se usa en .btn-styles, pero en vez de
+reaccionar a [open], reacciona al tema:
+
+  .btn-styles::before { content: "☀"; }
+  [data-theme="dark"] .btn-styles::before { content: "☾"; }
+
+Es decir: por defecto (tema claro) se ve un sol. Cuando el <html>
+tiene data-theme="dark" (lo cual ya hacía tu botón con el JS que ya
+tenías, no tuve que tocar nada ahí), el selector de arriba pisa el
+content y aparece la luna.
+
+Nota: ☀ y ☾ son símbolos de texto (Unicode), igual que tu ☰ original,
+así que se pintan con el color del texto (var(--ink-soft)) y cambian
+de color en :hover como cualquier letra. Algunos sistemas operativos
+podrían mostrarlos como emoji a color en vez de símbolo simple — si
+en algún momento querés control total sobre el color y la forma, el
+siguiente paso sería reemplazarlos por un ícono SVG en vez de un
+carácter Unicode, pero para este diseño el símbolo de texto es
+suficiente y mantiene la estética "mono" del sitio.
+
+
+3. EL MENÚ HAMBURGUESA A PANTALLA COMPLETA, SIN SCROLL
+----------------------------------------------------------
+Antes, .nav-list--mobile era un cuadrito flotante debajo del botón.
+Ahora agregué una regla que solo aplica CUANDO el <details> está
+abierto:
+
+  .mobile-nav[open] .nav-list--mobile {
+      position: fixed;
+      inset: 0;
+      height: 100dvh;
+      ...
+  }
+
+position: fixed + inset: 0 hace que ese elemento ignore su posición
+normal en la página y se estire para cubrir TODA la pantalla (arriba,
+abajo, izquierda y derecha, eso es lo que significa inset: 0 — es un
+atajo para top/right/bottom/left: 0 al mismo tiempo). Adentro, uso
+display: flex con justify-content y align-items en center para que
+los 3 links queden centrados en esa pantalla completa.
+
+Para que ni el fondo detrás del menú pueda hacer scroll mientras está
+abierto, agregué:
+
+  body:has(.mobile-nav[open]) { overflow: hidden; }
+
+:has() es un selector relativamente nuevo (soportado en todos los
+navegadores modernos desde 2023-2024): permite que un selector
+"mire hacia adentro" de sus propios hijos. En este caso dice: "si el
+<body> tiene, en cualquier parte de su interior, un .mobile-nav que
+esté abierto, entonces bloqueá el scroll del body". Es lo más parecido
+que tiene CSS a un "if" que consulta el estado de un hijo — antes de
+:has(), esto solo se podía hacer con JavaScript.
+
+También subí el z-index del botón hamburguesa (1000) por encima del
+menú (999), para que el botón (que ahora se convierte en la X) se siga
+viendo y se pueda seguir tocando para cerrar el menú, aunque el menú
+esté cubriendo toda la pantalla por encima de todo lo demás.
+
+
+4. POR QUÉ EL <main> YA NO TIENE SCROLL PROPIO, Y CÓMO SE ADAPTA MEJOR
+---------------------------------------------------------------------
+Este es el cambio más importante y el que más vale la pena entender.
+
+Antes tenías esto en <main>:
+  overflow-y: auto;
+
+Eso es justamente lo que generaba el scroll interno que no querías.
+Lo saqué, y en su lugar usé una técnica llamada "container queries"
+(consultas de contenedor), que es distinta a las media queries que ya
+conocías:
+
+  main {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      container-type: size;
+      container-name: escena;
+  }
+
+- flex: 1 y min-height: 0 ya los tenías: hacen que <main> ocupe todo
+  el espacio vertical que sobra entre el header y el footer (ni un
+  pixel más, ni un pixel menos).
+- overflow: hidden es la "red de seguridad": pase lo que pase, nunca
+  va a aparecer una barra de scroll ahí, en el peor caso el contenido
+  se recorta en vez de generar scroll (justo lo que pediste).
+- container-type: size es lo nuevo: le dice al navegador "quiero que
+  este elemento (<main>) se convierta en un contenedor de referencia
+  para medidas, no solo la pantalla completa". container-name: escena
+  le pone un nombre, opcional pero prolijo, por si en el futuro querés
+  varios contenedores distintos.
+
+Con eso habilitado, dentro del hero podés usar dos unidades nuevas:
+  cqh = 1% de la ALTURA de ese contenedor (<main>), no de la pantalla
+  cqw = 1% del ANCHO de ese contenedor (<main>), no de la pantalla
+
+Esto es la diferencia clave con lo que ya tenías (vw/dvh): vw y dvh
+miden la ventana COMPLETA del navegador, incluyendo el espacio que ya
+ocupan el header y el footer. Entonces cuando el header+footer eran
+"grandes" en proporción a la pantalla (por ejemplo en un celular en
+horizontal, con poca altura), el título y el dibujo se calculaban como
+si tuvieran toda la pantalla disponible, se pasaban de tamaño, y por
+eso aparecía el scroll. Con cqh/cqw, el título y el personaje miden el
+espacio REAL que les queda dentro de <main>, después de que el header
+y el footer ya se comieron su parte. Por eso ahora se van a achicar de
+verdad cuando hace falta, y crecer de verdad cuando sobra espacio —
+que es exactamente lo que notaste que faltaba ("las letras no crecen
+tan notoriamente").
+
+Ejemplos de las fórmulas que quedaron:
+
+  .wordmark {
+      font-size: clamp(1.7rem, 5cqh + 2.6cqw, 5.5rem);
+  }
+
+clamp(mínimo, valor preferido, máximo) ya lo usabas. Lo que cambié fue:
+(a) la unidad de referencia (ahora cqh/cqw en vez de vh/vw), y
+(b) subí el techo máximo (antes 4.5rem, ahora 5.5rem) y los
+coeficientes (5cqh + 2.6cqw en vez de 3vw + 3dvh), para que en
+pantallas grandes el título realmente siga creciendo antes de topar
+con el máximo, en vez de "pegarse" al tope enseguida y dejar espacio
+vacío alrededor. Lo mismo apliqué en .character-wrap (el ancho del
+dibujo), .role-labels (el texto "Web" / "dev" dentro de los ojos) y
+en los botones de nav.pages.
+
+También cambié cómo se separan los tres bloques del hero (título,
+dibujo, botones): antes cada uno tenía su propio margin fijo o en vh;
+ahora el <main class="hero"> es un flex column con:
+
+  gap: clamp(0.6rem, 2.4cqh, 2rem);
+
+gap en vez de márgenes individuales: es más prolijo (un solo lugar
+donde se define el espacio entre los tres bloques) y también escala
+con cqh, así que el espacio entre título/dibujo/botones también se
+achica en pantallas bajas y crece en pantallas altas, en vez de quedar
+fijo.
+
+Resumen de la idea: antes el hero "medía" contra la pantalla entera
+(vw/dvh) y por eso a veces se pasaba de tamaño (scroll) o se quedaba
+chico dejando huecos (no crecía). Ahora mide exactamente contra el
+espacio que <main> tiene disponible (cqh/cqw) después de restar el
+header y el footer, así que se ajusta de verdad al tamaño real
+disponible, sin scroll y sin huecos de sobra.
+
+
+4.1. AJUSTE: SE VEÍA GIGANTE EN PC
+------------------------------------
+Después del cambio anterior apareció un problema nuevo: en pantallas
+de PC, el título y el personaje se veían enormes (casi rotos). La
+causa: en escritorio, <main> es mucho más ancho Y más alto que en
+mobile al mismo tiempo, así que las fórmulas cqh + cqw sumaban un
+valor altísimo y pegaban contra el techo del clamp() casi enseguida
+(por ejemplo, el título llegaba a su máximo de 5.5rem/88px en
+prácticamente cualquier laptop, no solo en monitores gigantes).
+
+Hice dos ajustes, sin tocar mobile (que ya estaba bien, porque en
+pantallas chicas esos mismos cálculos daban valores bajos, lejos del
+techo, así que no se ven afectados):
+
+a) Bajé los techos máximos de los clamp() a valores más razonables
+   para escritorio:
+     .wordmark:        5.5rem -> 4rem
+     .character-wrap:  460px  -> 340px
+     .role-labels:      1.2rem -> 1.05rem
+
+b) Le puse un ancho máximo al propio <main>:
+     main { max-width: 1200px; margin-inline: auto; }
+
+   Esto evita que en monitores muy anchos (ultra-wide, 4K) el
+   contenedor de referencia (cqw) crezca sin límite y siga empujando
+   los tamaños hacia arriba. A partir de 1200px de ancho de ventana,
+   el <main> deja de crecer y se centra, y todo lo que mide en cqw dejó
+   de agrandarse más allá de ese punto.
+
+Con estos dos cambios juntos, mobile queda igual que antes (los
+valores nunca llegaban a esos techos) y escritorio deja de "romperse":
+el título, el personaje y el texto "Web/dev" ahora tienen un techo
+real más bajo, y el ancho de referencia para cqw ya no crece sin
+límite en pantallas muy anchas.
+
+
+5. RESUMEN DE TODO LO QUE CAMBIÓ (lista rápida)
+---------------------------------------------------
+- Botones del header (.hamburger-btn, .btn-styles): sin borde, sin
+  fondo, íconos vía ::before + content, cambian solos con [open] y
+  con [data-theme="dark"].
+- Menú hamburguesa: pantalla completa con position: fixed + inset: 0
+  cuando [open]; scroll del fondo bloqueado con :has().
+- <main>: se sacó overflow-y: auto (causaba el scroll no deseado); se
+  agregó overflow: hidden como red de seguridad y container-type:
+  size para medir el espacio real disponible.
+- Título, dibujo, botones de navegación y "Web/dev": todas sus
+  medidas fluidas pasaron de vw/dvh (miden la pantalla completa) a
+  cqh/cqw (miden el espacio real de <main>), con techos más altos en
+  el clamp() para que crezcan de forma más notoria en pantallas
+  grandes.
+- Se quitaron todos los comentarios del CSS (quedan acá, en este
+  archivo).
+
+Cualquier duda sobre alguna de estas reglas, decime cuál y te la
+explico con más detalle o con otro ejemplo.
