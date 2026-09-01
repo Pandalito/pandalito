@@ -396,7 +396,8 @@ footer {
 /* OPTIMIZACIÓN EXTRA: MÓVILES EN HORIZONTAL (LANDSCAPE) */
 @media (max-height: 480px) {
     .hero {
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 2rem;
         padding: 0.5rem 1rem;
     }
