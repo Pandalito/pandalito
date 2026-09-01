@@ -15,3 +15,20 @@ document.querySelectorAll(".spark").forEach((spark) => {
     spark.style.setProperty("--delay", retrasoAleatorio + "s");
 });
 
+// VIEWPORT DINÁMICO RESPONSIVE
+function initDynamicViewport() {
+    const setViewportUnits = () => {
+        const vh = window.innerHeight;
+        const vw = window.innerWidth;
+        // Inyectamos las variables exactas en píxeles al elemento raíz
+        document.documentElement.style.setProperty("--innerVe", `${vh}px`);
+        document.documentElement.style.setProperty("--innerHo", `${vw}px`);
+    };
+
+    window.addEventListener("resize", setViewportUnits);
+    window.addEventListener("orientationchange", setViewportUnits);
+    setViewportUnits();
+}
+
+// Inicializar al cargar el documento
+document.addEventListener("DOMContentLoaded", initDynamicViewport);
