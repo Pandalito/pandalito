@@ -21,6 +21,11 @@
     box-sizing: border-box;
 }
 
+html {
+    /* Quita el resaltado azul/gris que Android pone al tocar links y botones */
+    -webkit-tap-highlight-color: transparent;
+}
+
 html,
 body {
     height: 100%;
@@ -37,7 +42,8 @@ body {
     height: 100dvh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body:has(.mobile-nav[open]) {
@@ -46,6 +52,20 @@ body:has(.mobile-nav[open]) {
 
 a {
     color: inherit;
+}
+
+/* Foco accesible: solo aparece con teclado (Tab), nunca al hacer click/tap */
+a,
+button,
+summary {
+    outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 header {
@@ -184,7 +204,7 @@ header {
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .mobile-nav[open] .nav-list--mobile .nav-link {
@@ -225,7 +245,8 @@ main {
     width: 100%;
     max-width: 1200px;
     margin-inline: auto;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     container-type: size;
     container-name: escena;
 }
@@ -247,10 +268,6 @@ main {
     font-size: clamp(1.7rem, 5cqh + 2.6cqw, 4rem);
     letter-spacing: -0.02em;
     margin: 0;
-}
-
-[data-theme="ascii"] h1.wordmark {
-    letter-spacing: 0.05em;
 }
 
 .character-wrap {
