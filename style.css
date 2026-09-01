@@ -7,6 +7,9 @@
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    /* Valores de respaldo por si JavaScript tarda en cargar */
+    --innerVe: 100vh;
+    --innerHo: 100vw;
 }
 
 [data-theme="dark"] {
@@ -22,13 +25,12 @@
 }
 
 html {
-    /* Quita el resaltado azul/gris que Android pone al tocar links y botones */
     -webkit-tap-highlight-color: transparent;
 }
 
 html,
 body {
-    height: 100%;
+    height: var(--innerVe); /* Usar la altura dinámica real */
     margin: 0;
     padding: 0;
     background: var(--bg);
@@ -38,23 +40,18 @@ body {
 }
 
 body {
-    min-height: 100vh;
-    height: 100dvh;
+    min-height: var(--innerVe);
+    height: var(--innerVe);
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
-body:has(.mobile-nav[open]) {
-    overflow: hidden;
-}
-
 a {
     color: inherit;
 }
 
-/* Foco accesible: solo aparece con teclado (Tab), nunca al hacer click/tap */
 a,
 button,
 summary {
@@ -68,6 +65,7 @@ summary:focus-visible {
     outline-offset: 3px;
 }
 
+/* HEADER */
 header {
     display: grid;
     grid-template-columns: 1fr auto auto;
@@ -189,11 +187,12 @@ header {
     z-index: 999;
 }
 
+/* MENÚ MÓVIL OPTIMIZADO CON ALTO DINÁMICO */
 .mobile-nav[open] .nav-list--mobile {
     position: fixed;
     inset: 0;
     width: 100%;
-    height: 100dvh;
+    height: var(--innerVe); /* Evita desbordamiento por la barra del navegador */
     margin: 0;
     padding: 2rem;
     border: none;
@@ -239,40 +238,37 @@ header {
     content: "☾";
 }
 
+/* MAIN */
 main {
     flex: 1;
-    min-height: 0;
-    width: 100%;
-    max-width: 1200px;
-    margin-inline: auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    container-type: size;
-    container-name: escena;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
+/* HERO OPTIMIZADO CON VIEWPORT EN LUGAR DE CONTAINER QUERIES RIGIDOS */
 .hero {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: clamp(0.6rem, 2.4cqh, 2rem);
-    padding: clamp(0.75rem, 2cqh, 1.5rem) clamp(0.75rem, 2cqw, 1.5rem);
+    gap: clamp(0.6rem, 3vh, 2rem);
+    padding: 1.5rem 1rem;
+    max-width: 100%;
 }
 
 .wordmark {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.7rem, 5cqh + 2.6cqw, 4rem);
+    font-size: clamp(2rem, 4vh + 4vw, 4.5rem); /* Escalado fluido perfecto */
     letter-spacing: -0.02em;
     margin: 0;
 }
 
 .character-wrap {
     position: relative;
-    width: clamp(150px, 30cqh + 14cqw, 340px);
+    width: clamp(140px, 25vh + 10vw, 320px); /* Control exacto en pantallas cortas horizontales */
     margin: 0 auto;
 }
 
@@ -320,7 +316,7 @@ main {
     pointer-events: none;
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: clamp(0.75rem, 2.2cqh + 1cqw, 1.05rem);
+    font-size: clamp(0.7rem, 2vh + 1vw, 1.05rem);
     letter-spacing: 0.05em;
 }
 
@@ -348,9 +344,9 @@ nav.pages {
 
 nav.pages a {
     font-family: var(--font-mono);
-    font-size: clamp(0.75rem, 1.6cqh + 0.4cqw, 0.9rem);
+    font-size: clamp(0.75rem, 1.5vh + 0.5vw, 0.9rem);
     text-decoration: none;
-    padding: clamp(0.5rem, 1.4cqh, 0.7rem) clamp(0.9rem, 2cqw, 1.3rem);
+    padding: clamp(0.5rem, 1.2vh, 0.7rem) clamp(0.9rem, 2vw, 1.3rem);
     border: 1.5px solid var(--ink);
     border-radius: 999px;
     transition: background 0.25s ease, color 0.25s ease;
@@ -376,23 +372,7 @@ footer {
     color: var(--ink-soft);
 }
 
-.footer-status {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.footer-status .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    display: inline-block;
-}
-
+/* RESPONSIVE MEDIA QUERIES */
 @media (max-width: 640px) {
     header {
         padding: 1rem 1.25rem;
@@ -413,8 +393,20 @@ footer {
     }
 }
 
-@media (max-width: 480px) {
+/* OPTIMIZACIÓN EXTRA: MÓVILES EN HORIZONTAL (LANDSCAPE) */
+@media (max-height: 480px) {
+    .hero {
+        flex-direction: row;
+        gap: 2rem;
+        padding: 0.5rem 1rem;
+    }
+    .wordmark {
+        font-size: clamp(1.5rem, 8vh, 2.5rem);
+    }
+    .character-wrap {
+        width: clamp(100px, 40vh, 180px);
+    }
     .role-labels {
-        font-size: clamp(0.65rem, 2cqh + 1cqw, 0.95rem);
+        font-size: 0.7rem;
     }
 }
