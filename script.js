@@ -9,6 +9,29 @@ btn.addEventListener("click", () => {
     root.setAttribute("data-theme", change);
 });
 
+//ANIMACIÓN DE MI ALIAS
+const title_text = "PANDALITO";
+const title = document.querySelector(".title_text");
+const cursor = document.querySelector(".cursor");
+
+let letter = 0;
+
+function write() {
+    if (letter < title_text.length) {
+        title.textContent += title_text[letter];
+        letter++;
+        setTimeout(write, 100);
+    } else {
+        setTimeout(() => {
+            cursor.classList.add("cursor-finish");
+        }, 2300);
+    }
+}
+
+if (title && cursor) {
+    write();
+}
+
 // ANIMACIÓN DE LAS "IDEAS"
 document.querySelectorAll(".spark").forEach((spark) => {
     const retrasoAleatorio = (Math.random() * 3).toFixed(2);
