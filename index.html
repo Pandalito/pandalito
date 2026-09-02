@@ -7,8 +7,8 @@
   <title>Pandalito — Web Dev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&display=swap"
-    rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Megrim&display=swap"
+        rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -28,7 +28,7 @@
 
     <!-- Menú hamburguesa: visible solo en mobile, mismo patrón <details> que "Style" -->
     <details class="mobile-nav">
-      <summary class="hamburger-btn" aria-label="Abrir menú">☰</summary>
+      <summary class="hamburger-btn" aria-label="Abrir menú"></summary>
       <ul class="nav-list nav-list--mobile">
         <li class="nav-item"><a class="nav-link" href="">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="">My person</a></li>
@@ -41,7 +41,9 @@
 
   <!-- MAIN -->
   <main class="hero">
-    <h1 class="wordmark">PANDALITO</h1>
+    <h1 class="title">
+      <span class="title_text"></span><span class="cursor">|</span>
+    </h1>
 
     <div class="character-wrap">
       <svg viewBox="0 0 400 560" xmlns="http://www.w3.org/2000/svg">
@@ -86,6 +88,8 @@
       <div class="role-labels">
         <span>Web</span>
         <span>dev</span>
+        <p>Creo mundos digitales</p>
+        <p>para los usuarios.</p>
       </div>
     </div>
 
@@ -93,6 +97,7 @@
       <a href="about.html">About</a>
       <a href="#learning">What I'm Learning</a>
     </nav>
+
   </main>
 
   <!-- FOOTER -->
