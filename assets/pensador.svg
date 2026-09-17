@@ -1,0 +1,206 @@
+<svg class="character-wrap" viewBox="0 0 400 560" xmlns="http://www.w3.org/2000/svg">
+
+                    <!-- PERSONAJE -->
+
+                    <!-- Tapa de la cabeza -->
+                    <ellipse class="lid" cx="200" cy="110" rx="102" ry="15" />
+
+                    <!-- Lado izquierdo -->
+                    <path class="outline" d="
+                        M100,110
+                        C88,150 86,195 100,228
+                        C110,252 126,266 140,285
+                        C152,302 160,314 156,330
+                        C150,346 122,358 104,380
+                        C80,408 62,445 56,490
+                        L56,520
+                    " />
+
+                    <!-- Lado derecho -->
+                    <path class="outline" d="
+                        M300,110
+                        C312,150 314,195 300,228
+                        C290,252 274,266 260,285
+                        C248,302 240,314 244,330
+                        C250,346 278,358 296,380
+                        C320,408 338,445 344,490
+                        L344,520
+                    " />
+
+                    <!-- OJOS -->
+                    <ellipse class="eye" cx="155" cy="195" rx="32" ry="45" />
+                    <ellipse class="eye" cx="245" cy="195" rx="32" ry="45" />
+
+                    <!-- FLUJO DE IDEAS (OJOS Y CABEZA) -->
+                    <defs>
+                        <!-- Trayectorias dentro del ojo izquierdo -->
+                        <path id="eye-path-left" d="M155,225 C143,205 167,185 155,165" />
+                        <path id="eye-path-left-2" d="M145,225 C133,205 157,185 145,165" />
+
+                        <!-- Trayectorias dentro del ojo derecho -->
+                        <path id="eye-path-right" d="M245,225 C257,205 233,185 245,165" />
+                        <path id="eye-path-right-2" d="M235,225 C247,205 223,185 235,165" />
+
+                        <!-- Trayectorias saliendo de la cabeza -->
+                        <path id="head-path-far-left" d="M145,110 C140,102 135,95 140,88" />
+                        <path id="head-path-mid-left" d="M162,110 C157,102 152,95 157,88" />
+                        <path id="head-path-left" d="M185,110 C180,102 175,95 180,88" />
+                        <path id="head-path-center" d="M200,110 Q200,100 200,88" />
+                        <path id="head-path-right" d="M215,110 C220,102 225,95 220,88" />
+                        <path id="head-path-mid-right" d="M238,110 C243,102 248,95 243,88" />
+                        <path id="head-path-far-right" d="M255,110 C260,102 265,95 260,88" />
+                    </defs>
+
+                    <!-- PARTÍCULAS -->
+                    <g class="idea-particles">
+
+                        <!--  OJO IZQUIERDO -->
+                        <!-- brillito 1 (centro, empieza casi al inicio del ciclo) -->
+                        <circle class="idea-particle" r="1.6">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.0056;0.4167;1" keyPoints="0;0;1;1">
+                                <mpath href="#eye-path-left" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.0056;0.0878;0.3344;0.4167;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.6;1.6;3.4;1.6;1.6" keyTimes="0;0.0056;0.2111;0.4167;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- brillito 2 (carril desplazado a la izquierda) -->
+                        <circle class="idea-particle" r="1.5">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.0611;0.45;1" keyPoints="0;0;1;1">
+                                <mpath href="#eye-path-left-2" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.0611;0.1389;0.3722;0.45;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.5;1.5;3.0;1.5;1.5" keyTimes="0;0.0611;0.2556;0.45;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- brillito 3 (centro, empieza un poco más tarde) -->
+                        <circle class="idea-particle" r="1.4">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.1111;0.5111;1" keyPoints="0;0;1;1">
+                                <mpath href="#eye-path-left" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1111;0.1911;0.4311;0.5111;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.4;1.4;2.8;1.4;1.4" keyTimes="0;0.1111;0.3111;0.5111;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+
+                        <!-- OJO DERECHO -->
+                        <!-- brillito 1 -->
+                        <circle class="idea-particle" r="1.6">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.0333;0.4444;1" keyPoints="0;0;1;1">
+                                <mpath href="#eye-path-right" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.0333;0.1156;0.3622;0.4444;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.6;1.6;3.4;1.6;1.6" keyTimes="0;0.0333;0.2389;0.4444;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- brillito 2 (carril desplazado) -->
+                        <circle class="idea-particle" r="1.5">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.0833;0.4833;1" keyPoints="0;0;1;1">
+                                <mpath href="#eye-path-right-2" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.0833;0.1633;0.4033;0.4833;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.5;1.5;3.0;1.5;1.5" keyTimes="0;0.0833;0.2833;0.4833;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- brillito 3 -->
+                        <circle class="idea-particle" r="1.4">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.1222;0.5111;1" keyPoints="0;0;1;1">
+                                <mpath href="#eye-path-right" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1222;0.2;0.4333;0.5111;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.4;1.4;2.8;1.4;1.4" keyTimes="0;0.1222;0.3167;0.5111;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+
+                        <!-- SALIENDO DEL AGUJERO DE LA CABEZA  -->
+                        <!-- extremo izquierdo -->
+                        <circle class="idea-particle" r="1.2">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.6778;0.9333;1" keyPoints="0;0;1;1">
+                                <mpath href="#head-path-far-left" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.6778;0.7289;0.8822;0.9333;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.2;1.2;2.6;1.2;1.2" keyTimes="0;0.6778;0.8056;0.9333;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- medio-izquierda -->
+                        <circle class="idea-particle" r="1.3">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.7222;0.9889;1" keyPoints="0;0;1;1">
+                                <mpath href="#head-path-mid-left" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.7222;0.7756;0.9356;0.9889;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.3;1.3;3.0;1.3;1.3" keyTimes="0;0.7222;0.8556;0.9889;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- izquierda -->
+                        <circle class="idea-particle" r="1.2">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.6667;0.9111;1" keyPoints="0;0;1;1">
+                                <mpath href="#head-path-left" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.6667;0.7156;0.8622;0.9111;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.2;1.2;2.8;1.2;1.2" keyTimes="0;0.6667;0.7889;0.9111;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- centro -->
+                        <circle class="idea-particle" r="1.4">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.7;0.9778;1" keyPoints="0;0;1;1">
+                                <mpath href="#head-path-center" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.7;0.7556;0.9222;0.9778;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.4;1.4;3.4;1.4;1.4" keyTimes="0;0.7;0.8389;0.9778;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- derecha -->
+                        <circle class="idea-particle" r="1.2">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.7444;0.9778;1" keyPoints="0;0;1;1">
+                                <mpath href="#head-path-right" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.7444;0.7911;0.9311;0.9778;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.2;1.2;2.8;1.2;1.2" keyTimes="0;0.7444;0.8611;0.9778;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- medio-derecha -->
+                        <circle class="idea-particle" r="1.3">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.7111;0.9667;1" keyPoints="0;0;1;1">
+                                <mpath href="#head-path-mid-right" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.7111;0.7622;0.9156;0.9667;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.3;1.3;3.0;1.3;1.3" keyTimes="0;0.7111;0.8389;0.9667;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                        <!-- extremo derecho -->
+                        <circle class="idea-particle" r="1.2">
+                            <animateMotion dur="9.0s" begin="0s" repeatCount="indefinite"
+                                calcMode="linear" keyTimes="0;0.6722;0.9333;1" keyPoints="0;0;1;1">
+                                <mpath href="#head-path-far-right" />
+                            </animateMotion>
+                            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.6722;0.7244;0.8811;0.9333;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="r" values="1.2;1.2;2.6;1.2;1.2" keyTimes="0;0.6722;0.8028;0.9333;1"
+                                dur="9.0s" begin="0s" repeatCount="indefinite" />
+                        </circle>
+                    </g>
+                </svg>

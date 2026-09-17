@@ -7,15 +7,15 @@
   <title>Pandalito — Web Dev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Megrim&display=swap"
-        rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Megrim&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
   <!-- HEADER -->
   <header>
-    <a class="brand-mark" href="index.html">Pandalito ✳ dev</a>
+    <a class="brand-mark" href="index.html">Pandalito - dev</a>
 
     <!-- Nav normal: visible solo en desktop -->
     <nav class="nav-bar">
@@ -41,57 +41,11 @@
 
   <!-- MAIN -->
   <main class="hero">
-    <h1 class="title">
-      <span class="title_text"></span><span class="cursor">|</span>
-    </h1>
+    <h1 id="alias">pandalito</h1>
+    <h2 class="post-title">desarrollador web</h2>
+    <p class="hero-text">Creo mundos digitales para los usuarios.</p>
 
-    <div class="character-wrap">
-      <svg viewBox="0 0 400 560" xmlns="http://www.w3.org/2000/svg">
-        <!-- ideas -->
-        <circle class="spark" cx="70" cy="5" r="4" />
-        <circle class="spark" cx="110" cy="5" r="5" />
-        <circle class="spark" cx="170" cy="5" r="6" />
-        <circle class="spark" cx="230" cy="5" r="6" />
-        <circle class="spark" cx="280" cy="5" r="5" />
-        <circle class="spark" cx="320" cy="5" r="4" />
-
-        <!-- tapa de la cabeza -->
-        <ellipse class="lid" cx="200" cy="110" rx="102" ry="15" />
-
-        <!-- lado izquierdo: cabeza -> cuello -> hombro, una sola línea abierta -->
-        <path class="outline" d="
-          M100,110
-          C88,150 86,195 100,228
-          C110,252 126,266 140,285
-          C152,302 160,314 156,330
-          C150,346 122,358 104,380
-          C80,408 62,445 56,490
-          L56,520
-        " />
-
-        <!-- lado derecho: espejo exacto del izquierdo -->
-        <path class="outline" d="
-          M300,110
-          C312,150 314,195 300,228
-          C290,252 274,266 260,285
-          C248,302 240,314 244,330
-          C250,346 278,358 296,380
-          C320,408 338,445 344,490
-          L344,520
-        " />
-
-        <!-- ojos -->
-        <ellipse class="eye" cx="155" cy="195" rx="32" ry="45" />
-        <ellipse class="eye" cx="245" cy="195" rx="32" ry="45" />
-      </svg>
-
-      <div class="role-labels">
-        <span>Web</span>
-        <span>dev</span>
-        <p>Creo mundos digitales</p>
-        <p>para los usuarios.</p>
-      </div>
-    </div>
+    <div id="pensador"></div>
 
     <nav class="pages">
       <a href="about.html">About</a>
@@ -103,10 +57,18 @@
   <!-- FOOTER -->
   <footer>
     <span class="credit">© Pandalito 2026 — pensamientos, ideas y código</span>
+    <nav class="footer-barra">
+      <ul class="footer-list">
+        <li class="footer-item"><a href="" class="footer-link"><i class="fa-brands fa-github icon"></i></a></li>
+        <li class="footer-item"><a href="" class="footer-link"><i class="fa-brands fa-square-linkedin icon"></i></a></li>
+        <li class="footer-item"><a href="" class="footer-link"><i class="fa-brands fa-instagram icon"></i></a></li>
+      </ul>
+    </nav>
   </footer>
 
   <!-- SCRIPT -->
-  <script src="script.js"></script>
+  <script src="/js/script.js"></script>
+  <script src="https://kit.fontawesome.com/9735587572.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
