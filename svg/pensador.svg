@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="140.27901mm"
+   height="207.2mm"
+   viewBox="0 0 140.279 207.19999"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="pensador.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.74434875"
+     inkscape:cx="-227.71584"
+     inkscape:cy="239.80694"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-42.316205,-87.702101)">
+    
+    <ellipse 
+       style="fill:#000000;stroke-width:0.264583"
+       id="path3"
+       cx="112.44093"
+       cy="95.248344"
+       rx="52.740002"
+       ry="2.1599998" 
+       class="pensador-agujero" />
+    
+    <ellipse
+       style="fill:#000000;stroke-width:0.264583"
+       id="path4"
+       cx="86.778191"
+       cy="140.01617"
+       rx="16.200001"
+       ry="21.779999" 
+       class="pensador-ojo--izquierdo" />
+    
+    <ellipse
+       style="fill:#000000;stroke-width:0.264583"
+       id="path4-8"
+       cx="136.59576"
+       cy="139.51768"
+       rx="16.200001"
+       ry="21.779999" 
+       class="pensador-ojo" />
+    
+    <path
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32371;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 59.986706,95.273787 c 0.491889,28.035483 0.201788,56.145213 0.736517,84.180553 l 41.534837,9.17411 0.25134,18.59956 -55.295996,17.59418 0.251346,60.57426 130.69964,0.25135 -0.25135,-61.32829 -57.05542,-17.34284 -0.50269,-18.85091 41.97469,-7.28902 1.80352,-85.583166"
+       id="path13"
+       sodipodi:nodetypes="cccccccccccc" 
+       class="pensador-cuerpo" />
+  </g>
+
+</svg>
