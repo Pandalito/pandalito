@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es" data-mode="css">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Efecto de ruido (grain)</title>
+<style>
+  /* ============ 1. VARIABLES (como constantes en Python: NOMBRE = valor) ============ */
+  :root {
+    --bg: #f1efe8; --fg: #1a1a1a; --muted: #6d6b65; --accent: #e8431f;
+    --grain: 0.10;            /* intensidad del ruido: 0 = nada, 1 = máximo */
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #0e0e10; --fg: #f2f0ea; --muted: #8d8b85; --accent: #ff5c35; --grain: 0.16; }
+  }
+  :root[data-theme="dark"] { --bg: #0e0e10; --fg: #f2f0ea; --muted: #8d8b85; --accent: #ff5c35; --grain: 0.16; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ============ 2. CONTENIDO DE LA PÁGINA ============ */
+  /* Un degradado detrás: el ruido se nota MUCHO más sobre degradados que sobre un color plano */
+  main {
+    min-height: 100svh; display: flex; flex-direction: column; justify-content: center;
+    padding: 2rem; gap: 1rem;
+    background:
+      radial-gradient(60vmax 60vmax at 80% 10%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 60%),
+      radial-gradient(50vmax 50vmax at 10% 90%, color-mix(in srgb, var(--fg) 14%, transparent), transparent 60%);
+  }
+  h1 { font-size: clamp(3rem, 12vw, 9rem); line-height: .9; margin: 0; letter-spacing: -0.04em; }
+  p  { max-width: 32ch; color: var(--muted); font-size: 1.1rem; margin: 0; }
+
+  /* ============ 3. TÉCNICA A: RUIDO CON CSS + SVG ============ */
+  .grain {
+    position: fixed;
+    /* La capa es 3 veces más grande que la pantalla (de -100% a +200%)...
+       así podemos moverla sin que se vean los bordes. */
+    inset: -100%;
+    pointer-events: none;     /* los clics «atraviesan» el ruido */
+    z-index: 50;
+    opacity: var(--grain);
+    /* Esta imagen SVG se genera con feTurbulence: un filtro que fabrica ruido aleatorio.
+       baseFrequency = qué tan fino es el grano (más alto = más fino). */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    /* steps(8) hace que la animación «salte» en 8 pasos en vez de deslizarse suave.
+       Ese salto es lo que parece grano de película. */
+    animation: grain 0.9s steps(8) infinite;
+  }
+  @keyframes grain {
+    0%   { transform: translate(0, 0); }
+    12%  { transform: translate(-5%, -10%); }
+    25%  { transform: translate(-15%, 5%); }
+    37%  { transform: translate(7%, -25%); }
+    50%  { transform: translate(-5%, 25%); }
+    62%  { transform: translate(-15%, 10%); }
+    75%  { transform: translate(15%, 0%); }
+    87%  { transform: translate(0%, 15%); }
+    100% { transform: translate(3%, 35%); }
+  }
+
+  /* ============ 4. TÉCNICA B: RUIDO CON CANVAS + JAVASCRIPT ============ */
+  .noise-canvas {
+    display: none; position: fixed; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 50; opacity: var(--grain);
+    image-rendering: pixelated;   /* al agrandar el canvas, no suaviza: se ven píxeles */
+  }
+  [data-mode="canvas"] .grain { display: none; }
+  [data-mode="canvas"] .noise-canvas { display: block; }
+
+  /* Respeta a quien pidió «menos movimiento» en su sistema */
+  @media (prefers-reduced-motion: reduce) { .grain { animation: none; } }
+
+  /* ============ 5. CONTROLES ============ */
+  .controls {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    display: flex; flex-wrap: wrap; gap: .75rem; align-items: center;
+    padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom, 0px));
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(8px); font-size: .85rem;
+  }
+  button {
+    font: inherit; color: var(--fg); background: transparent; cursor: pointer;
+    border: 1px solid var(--muted); border-radius: 999px; padding: .4rem .9rem;
+  }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  input[type="range"] { accent-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<main>
+  <h1>Tu<br>Nombre</h1>
+  <p>Diseñador y desarrollador front-end. Cambia la intensidad abajo y mira cómo reacciona el grano.</p>
+</main>
+
+<!-- Las dos capas de ruido (solo una se muestra a la vez) -->
+<div class="grain" aria-hidden="true"></div>
+<canvas class="noise-canvas" id="noise" aria-hidden="true"></canvas>
+
+<div class="controls">
+  <button id="modeBtn">Técnica: CSS</button>
+  <button id="themeBtn">Claro / Oscuro</button>
+  <label>Intensidad
+    <input type="range" id="intensity" min="0" max="0.5" step="0.01" value="0.12">
+  </label>
+</div>
+
+<script>
+  // ============ JAVASCRIPT (explicado desde Python) ============
+  // `const` = variable que no se reasigna. `let` = variable que sí puede cambiar.
+  // En Python simplemente escribirías: root = ...   (no hay diferencia entre ambas).
+
+  // document.documentElement es la etiqueta <html>. La usamos para cambiar variables CSS.
+  const root = document.documentElement;
+  const canvas = document.getElementById("noise");   // busca el elemento con id="noise"
+  const ctx = canvas.getContext("2d");               // «lápiz» para dibujar píxeles en el canvas
+
+  let running = false;   // ¿está corriendo la animación del canvas?
+  let last = 0;          // momento (en ms) del último fotograma dibujado
+
+  // --- Ajusta el tamaño del canvas ---
+  // Usamos 1/3 de la resolución real: menos píxeles = más rápido y grano más grueso.
+  function resize() {                                // `function` ≈ `def` de Python
+    canvas.width  = Math.ceil(window.innerWidth  / 3);
+    canvas.height = Math.ceil(window.innerHeight / 3);
+  }
+
+  // --- Dibuja un fotograma de ruido ---
+  function drawNoise() {
+    // ImageData = una lista gigante de números con los píxeles. Cada píxel usa 4: R, G, B, A.
+    const img = ctx.createImageData(canvas.width, canvas.height);
+    const data = img.data;
+
+    // Equivale al for de Python:  for i in range(0, len(data), 4)
+    for (let i = 0; i < data.length; i += 4) {
+      const v = Math.random() * 255;   // número al azar entre 0 y 255 (un gris)
+      data[i]     = v;   // rojo
+      data[i + 1] = v;   // verde
+      data[i + 2] = v;   // azul  → R = G = B da un gris
+      data[i + 3] = 255; // alfa (255 = opaco; la transparencia final la da CSS con opacity)
+    }
+    ctx.putImageData(img, 0, 0);   // pega los píxeles en el canvas
+  }
+
+  // --- Bucle de animación ---
+  // requestAnimationFrame le pide al navegador: «llama a esta función antes del próximo repintado».
+  // `t` es el tiempo actual en milisegundos.
+  function loop(t) {
+    if (!running) return;                // si se apagó, salimos del bucle
+    if (t - last > 1000 / 12) {          // solo dibujamos ~12 veces por segundo (look de película)
+      last = t;
+      drawNoise();
+    }
+    requestAnimationFrame(loop);         // se vuelve a llamar a sí misma
+  }
+
+  // --- Botón: cambiar de técnica ---
+  // addEventListener("click", función) = «cuando hagan clic, ejecuta esto».
+  // `() => { ... }` es una función anónima (como un lambda de Python, pero con varias líneas).
+  document.getElementById("modeBtn").addEventListener("click", (e) => {
+    const toCanvas = root.dataset.mode === "css";   // === compara valor y tipo (como == en Python)
+    root.dataset.mode = toCanvas ? "canvas" : "css"; // condición ? si_cierto : si_falso  ≈  a if cond else b
+    e.target.textContent = "Técnica: " + (toCanvas ? "Canvas (JS)" : "CSS");
+
+    running = toCanvas;
+    if (running) { resize(); requestAnimationFrame(loop); }
+  });
+
+  // --- Botón: tema claro/oscuro ---
+  document.getElementById("themeBtn").addEventListener("click", () => {
+    // ¿Ya hay un tema elegido a mano? Si no, miramos la preferencia del sistema.
+    const isDark = root.dataset.theme
+      ? root.dataset.theme === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = isDark ? "light" : "dark";
+  });
+
+  // --- Slider: intensidad ---
+  // `input` se dispara mientras arrastras. Cambiamos la variable CSS --grain en vivo.
+  document.getElementById("intensity").addEventListener("input", (e) => {
+    root.style.setProperty("--grain", e.target.value);
+  });
+
+  window.addEventListener("resize", () => { if (running) resize(); });
+</script>
+</body>
+</html>

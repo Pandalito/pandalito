@@ -12,6 +12,15 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Megrim&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- iconos -->
     <script src="https://kit.fontawesome.com/9735587572.js" crossorigin="anonymous" defer></script>
+    <!-- pa que se guarde el color -->
+    <script>
+        const temaGuardado = localStorage.getItem("tema");
+
+        if (temaGuardado) {
+            document.documentElement.dataset.theme = temaGuardado
+        }
+    </script>
+
 </head>
 <!-- POBRE AQUEL QUE DIGA QUE ESTO SE HIZO CON IA! -->
 <body>
@@ -42,9 +51,9 @@
         <button class="icono-movil"></button>
         <nav class="movil-nav">
             <ul class="movil-list">
-                <li class="movil-item"><a href="#" class="movil-link"></a></li>
-                <li class="movil-item"><a href="#" class="movil-link "></a></li>
-                <li class="movil-item"><a href="#" class="movil-link"></a></li>
+                <li class="movil-item"><a href="/index.html" class="movil-link">Inicio</a></li>
+                <li class="movil-item"><a href="/html/about.html" class="movil-link">Sobre mi</a></li>
+                <li class="movil-item"><a href="/html/projects.html" class="movil-link">Avances</a></li>
                 <li class="movil-item"><a href="#" class="movil-link"></a></li>
             </ul>
         </nav>
@@ -56,7 +65,7 @@
         <section class="inicio">
             <h1 class="inicio-titulo">Pandalito</h1>
             <h2 class="inicio-subtitulo">Programador</h2>
-            <p class="inicio-texto">Dejame ser el pensador que creé lo que tienes en mente.</p>
+            <p class="inicio-texto">Puedo ser el pensador que creé lo que tienes en mente.</p>
 
             <!-- el pensador -->
             <svg class="pensador" viewBox="0 0 140.279 207.19999" version="1.1" id="svg1"
@@ -109,7 +118,7 @@
     </footer>
 
     <!-- SCRIPT -->
-    <script src="/js/script.js"></script>
+    <script src="/js/script.js" defer></script>
 </body>
 
 </html>
