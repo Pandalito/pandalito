@@ -20,7 +20,7 @@
     --accent: #44b100;
 }
 [data-theme = "dark"] {
-    --bg: #0c0b0c;
+    --bg: #0a090a;
     --ink: #fff;
     --ink_soft: #ccc;
     --accent: #B069DB;
@@ -49,6 +49,15 @@ body {
 
 /* ANIMACIONES -------------------------- */
 /* por si proximamente le pongo */
+#ruido {
+    position: fixed;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    opacity: 2%;
+    pointer-events: none;
+}
 
 /* HEADER ------------------------------- */
 header {
@@ -228,13 +237,21 @@ main {
 }
 /* INDEX */
 /* inicio */
-.inicio {   
+.inicio {
+    min-width: 100%;   
+    min-height: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    padding: 20px 10px;
+    gap: 20px;
 }
+.inicio-info {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+}
+
 .inicio-titulo {
     letter-spacing: 1.9px;
     text-transform: uppercase;
@@ -252,7 +269,6 @@ main {
     color: var(--ink);
 }
 .inicio-texto {
-    text-align: center;
     font-family: var(--text);
     font-size: var(--font_m);
     font-weight: 200;
@@ -260,11 +276,13 @@ main {
 }
 
 /* EL PENSADOR */
+.el-pensador {
+    display: flex;
+    justify-content: center;
+}
 .pensador {
     display: block;
     height: 400px;
-    max-width: 100%;
-    padding: 20px;
 }
 .pensador-agujero{
     fill: var(--ink);
